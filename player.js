@@ -20,6 +20,10 @@ var Player = (function(){
 
         this._speed = 3;
     }
+
+    Player.prototype.getName = function(){
+        return this._name;
+    }
     Player.prototype.KeyPressed = function(key){
         this._key=key;
         this._release = false;
