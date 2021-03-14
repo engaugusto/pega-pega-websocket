@@ -88,10 +88,11 @@ function ScreenLoop(obj){
     if(y>height)
         y=0;
     obj.setPos(x,y);
-    
+
 }
 
 function newPlayer(data){
+    console.log('new player has arrived')
     p1ou2 = 1;
     if(data.num == 1)
         p1ou2=0;
@@ -146,9 +147,9 @@ function drawFimJogo(){
 function netUpdate(){
     fimJogo = getFimJogo();
     if(fimJogo){
-       return; 
+       return;
     }
-    var newObjArray = getUpdateNet(); 
+    var newObjArray = getUpdateNet();
     var i = 0;
     //updating myself
     var objSend = {
@@ -160,7 +161,7 @@ function netUpdate(){
     if(newObjArray != null){
        for(i;i<objArray.length;i++){
           for(j=0;j<newObjArray.length;j++){
-             if(i != p1ou2 
+             if(i != p1ou2
                  && objArray[i].getName() == newObjArray[j].num){
                  objArray[i].setPos(newObjArray[j].x,newObjArray[j].y);
              }
@@ -175,7 +176,7 @@ function update(){
         return;
     var i = 0;
     for(i;i<objArray.length;i++) {
-        ScreenLoop(objArray[i]); 
+        ScreenLoop(objArray[i]);
         objArray[i].Update();
     }
     netUpdate();
@@ -194,7 +195,7 @@ function start(){
         for(i;i<NetPlayers.length;i++){
             netP = NetPlayers[i];
             loadPlayer(netP.num,netP.x,netP.y, netP.imgName);
-        } 
+        }
     }
     document.addEventListener("keyup", keyUpHandler, false);
     document.addEventListener("keydown", keyDownHandler, false);
@@ -202,7 +203,7 @@ function start(){
 
 ready = function(event){
     console.log("DOM ready");
-    
+
     start();
     var mainLoop = function(){
         clearDraw();
@@ -213,4 +214,3 @@ ready = function(event){
 }
 
 //window.addEventListener('DOMContentLoaded', ready);
-
