@@ -1,3 +1,5 @@
+// Para jogar em rede ou pela internet trocar o IP abaixo pelo da sua maquina ou do HOST
+// Se for online a porta 8052 tem que estar liberada no pc que vai rodar server
 var socket = io.connect('http://localhost:8052/');
 var fimjogo = false;
 
