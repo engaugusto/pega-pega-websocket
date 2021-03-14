@@ -2,10 +2,10 @@
 
 Executar
 1. npm install
-2. Abra 1 terminal
-    node server.js
-3. Abra outro terminal
-    node client-server.js
+2. Abra 1 terminal na pasta server
+    npm start
+3. Abra outro terminal na pasta client
+    npm start
 4. abrir o chrome
     http://localhost:8083
 5. abrir o firefox
