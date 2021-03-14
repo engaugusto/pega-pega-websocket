@@ -1,0 +1,36 @@
+<html>
+  <head>
+  </head>
+  <body>
+    
+  </body>
+    <script type="text/javascript">
+        //criando o canvas
+        var canvas = document.createElement('canvas');
+        canvas.id = 'canvas1';
+        canvas.width=640;
+        canvas.height=480;
+        canvas.style.border="1px solid";
+        document.body.appendChild(canvas);
+        
+        //criando a img
+        var imgName="didi.png";
+        var imgObj = new Image(); //document.createElement("img");
+        imgObj.src="./"+imgName;
+        imgObj.onload = function(){
+            //desenhando na tela
+             var context = canvas.getContext('2d');
+             var posX = 150;
+             var posY = 159;
+			 var scale = 0.3;
+			 var width = imgObj.width*scale;
+			 var height = imgObj.height*scale;
+             context.drawImage(
+                 imgObj,
+                 posX,
+                 posY,
+				 width,
+				 height);
+       }
+    </script>
+</html>

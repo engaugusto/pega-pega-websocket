@@ -1,4 +1,5 @@
 var socket = io.connect('http://localhost:8052/');
+var fimjogo = false;
 
 var NetPlayers = {};
 updateNetMyself = function(obj){ 
@@ -20,6 +21,10 @@ NewPlayerConnected= function(data){
     newPlayer(data);
 }
 
+getFimJogo = function(){
+    return fimjogo;
+}
+
 socket.on('connect', function () {
 
     socket.on('getUpdate', function(objData){
@@ -28,6 +33,10 @@ socket.on('connect', function () {
    
     socket.on('newP', function(data){
         NewPlayerConnected(data);
+    });
+
+    socket.on('fimjogo', function(){
+       fimjogo=true; 
     });
 
     socket.on('getPlayers', function (data) {

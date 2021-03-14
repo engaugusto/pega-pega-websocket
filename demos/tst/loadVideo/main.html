@@ -1,0 +1,19 @@
+<html>
+  <head> </head> <body> </body>
+    <script type="text/javascript">
+        //nome do som
+        var videoName = "bunny.mp4";
+
+        //criando o "canal" de audio
+        var videoEle=document.createElement('video');
+       	videoEle.src = "./"+videoName;
+		
+		videoEle.width = 640;
+		videoEle.height = 480;
+		
+		document.body.appendChild(videoEle);
+		
+        //finalmente
+        videoEle.play();
+    </script>
+</html>

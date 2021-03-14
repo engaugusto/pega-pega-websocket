@@ -1,0 +1,41 @@
+<html>
+  <head> </head> <body> </body>
+    <script type="text/javascript">
+        //nome do som
+        var soundName = "zelda.mp3";
+
+        //criando o "canal" de audio
+        var audioEle=document.createElement('audio');
+        audioEle.setAttribute('preload','auto');
+        audioEle.autobuffer=true;
+
+        //criando a fonte (o arquivo do som)
+        var source1=document.createElement('source');
+        source1.type='audio/mpeg';
+        source1.src=soundName;
+        audioEle.appendChild(source1);
+
+		document.body.appendChild(audioEle);
+		
+        //finalmente
+        audioEle.play();
+		
+        //adicionado botes playStop
+        var btnStop = document.createElement('input');
+        btnStop.type='button';
+        btnStop.value ='stop';
+        btnStop.onclick=function(){
+            audioEle.pause();
+            audioEle.currentTime=0;
+        }
+        document.body.appendChild(btnStop);
+        //btnplay
+        var btnPlay = document.createElement('input');
+        btnPlay.type='button';
+        btnPlay.value ='play';
+        btnPlay.onclick=function(){
+             audioEle.play();
+        } 
+        document.body.appendChild(btnPlay);
+    </script>
+</html>

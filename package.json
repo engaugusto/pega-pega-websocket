@@ -1,0 +1,27 @@
+{
+  "name": "pega-pega-websocket",
+  "version": "1.0.0",
+  "description": "jogo de pega-pega com html5+websocket e servidor em nodejs e express",
+  "main": "client-server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/engaugusto/pega-pega-websocket.git"
+  },
+  "keywords": [
+    "websocket",
+    "nodejs",
+    "game",
+    "html5",
+    "pega-pega"
+  ],
+  "author": "Carlos Augusto",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/engaugusto/pega-pega-websocket/issues"
+  },
+  "homepage": "https://github.com/engaugusto/pega-pega-websocket#readme"
+}

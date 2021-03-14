@@ -3,7 +3,7 @@ var context;
 var width=800;
 var height=600;
 var ONE_FRAME_TIME = 1000 / 60;
-
+var fimJogo = false;
 var p1ou2=0;//0-indefinido, 1-p1,2-p2
 
 //Web
@@ -16,6 +16,10 @@ var imgPath = "/img/";
 var objArray = new Array();
 
 var arrayImg = [];
+
+//*****************************
+//     Engine
+//*****************************
 function addImg(name){
     var i=0;
     if(arrayImg.length == 0)
@@ -28,20 +32,12 @@ function addImg(name){
     arrayImg.push(imgLoaded);
     return imgLoaded;
 }
-
-function loadPlayer(name, x,y,imgName){
-    var imgObj = addImg(imgName);
-    var newP = new Player(name,context,imgObj,x,y);
-    objArray.push(newP);
-}
-
 function loadImg(name){
     var fileName = sitePath+imgPath+name;
     var imageObj = new Image();
     imageObj.src=fileName;
     return imageObj;
 }
-
 function createCanvas(){
    canvas = document.createElement('canvas');
    canvas.id="mainLayer";
@@ -52,57 +48,15 @@ function createCanvas(){
    context = canvas.getContext('2d');
 }
 
-function start(){
-    createCanvas();
-    //loadPlayer("fyn", 100,50, "fyn.png"); 
-    //loadPlayer(player.num, 100,50, player.imgName);      
-    if(NetPlayers == null)
-        return;
-    if(NetPlayers.length > 1){
-        var i =0;
-        var netP;
-        for(i;i<NetPlayers.length;i++){
-            netP = NetPlayers[i];
-            loadPlayer(netP.num,0,0, netP.imgName);
-        } 
-    }
-    document.addEventListener("keyup", keyUpHandler, false);
-    document.addEventListener("keydown", keyDownHandler, false);
-}
 
-function netDraw(){
-   var objDraw = drawNetMulti(); 
-   if(typeof(objDraw) == 'undefined'){
-        return;
-   }
-   var img = addImg(objDraw[1].imgName);
-   if(typeof(img) == 'undefined')
-        return;
-   context.drawImage(
-        img,
-        objDraw[p1ou2].x,
-        objDraw[p1ou2].y
-   );
-}
 
-function draw(){
-    //netDraw(); 
-    var i = 0;
-    for(i;i<objArray.length;i++) {
-        objArray[i].Draw();
-    }
-}
-
-function clearDraw(){
-    // Store the current transformation matrix
-    context.save();
-
-    // Use the identity matrix while clearing the canvas
-    context.setTransform(1, 0, 0, 1, 0, 0);
-    context.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Restore the transform
-    context.restore();
+//*****************************
+//     Aux. ao jogo
+//*****************************
+function loadPlayer(name, x,y,imgName){
+    var imgObj = addImg(imgName);
+    var newP = new Player(name,context,imgObj,x,y);
+    objArray.push(newP);
 }
 
 function keyUpHandler(event){
@@ -144,7 +98,56 @@ function newPlayer(data){
     loadPlayer(data.num, data.x, data.y, data.imgName);
 }
 
+//*****************************
+//     Update
+//*****************************
+function draw(){
+    if(fimJogo){
+        clearDraw();
+        drawFimJogo();
+        return;
+    }
+    var i = 0;
+    for(i;i<objArray.length;i++) {
+        objArray[i].Draw();
+    }
+}
+
+function clearDraw(){
+    // Store the current transformation matrix
+    context.save();
+
+    // Use the identity matrix while clearing the canvas
+    context.setTransform(1, 0, 0, 1, 0, 0);
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Restore the transform
+    context.restore();
+}
+
+function drawFimJogo(){
+   var imgName = "you_lose.png";
+   if(p1ou2==1){
+        imgName="you_win.png";
+   }
+   var img = addImg(imgName);
+   if(typeof(img) == 'undefined')
+        return;
+   context.drawImage(
+        img,
+        20,
+        20
+   );
+}
+
+//*****************************
+//     Update
+//*****************************
 function netUpdate(){
+    fimJogo = getFimJogo();
+    if(fimJogo){
+       return; 
+    }
     var newObjArray = getUpdateNet(); 
     var i = 0;
     //updating myself
@@ -155,25 +158,46 @@ function netUpdate(){
     };
     var j=0;
     if(newObjArray != null){
-    for(i;i<objArray.length;i++){
-        for(j=0;j<newObjArray.length;j++){
-            if(i != p1ou2 
-                && objArray[i].getName() == newObjArray[j].num){
-                objArray[i].setPos(newObjArray[j].x,newObjArray[j].y);
-            }
-        }
-    }
+       for(i;i<objArray.length;i++){
+          for(j=0;j<newObjArray.length;j++){
+             if(i != p1ou2 
+                 && objArray[i].getName() == newObjArray[j].num){
+                 objArray[i].setPos(newObjArray[j].x,newObjArray[j].y);
+             }
+          }
+       }
     }
     updateNetMyself(objSend);
 }
 
 function update(){
+    if(fimJogo)
+        return;
     var i = 0;
     for(i;i<objArray.length;i++) {
         ScreenLoop(objArray[i]); 
         objArray[i].Update();
     }
     netUpdate();
+}
+
+//*****************************
+//     Ready !
+//*****************************
+function start(){
+    createCanvas();
+    if(NetPlayers == null)
+        return;
+    if(NetPlayers.length > 1){
+        var i =0;
+        var netP;
+        for(i;i<NetPlayers.length;i++){
+            netP = NetPlayers[i];
+            loadPlayer(netP.num,netP.x,netP.y, netP.imgName);
+        } 
+    }
+    document.addEventListener("keyup", keyUpHandler, false);
+    document.addEventListener("keydown", keyDownHandler, false);
 }
 
 ready = function(event){
